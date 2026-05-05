@@ -24,11 +24,20 @@ class Fill:
 
 
 class PaperTrader:
-    def __init__(self, starting_capital=100000.0):
+    def __init__(self, starting_capital=100000.0, verbose=True):
         self.starting_capital = float(starting_capital)
         self.cash = float(starting_capital)
         self.position = None
         self.fills = []
+        self.verbose = verbose
+
+    def add_funds(self, amount):
+        amount = float(amount)
+        if amount <= 0:
+            raise ValueError("amount must be greater than zero")
+        self.cash += amount
+        self.starting_capital += amount
+        return self.cash
 
     @property
     def realized_pnl(self):
@@ -48,7 +57,8 @@ class PaperTrader:
         )
         fill = Fill(datetime.now(), symbol, "BUY", int(quantity), float(price), reason=reason)
         self.fills.append(fill)
-        print(f"PAPER BUY {symbol} qty={quantity} price={price:.2f} reason={reason}")
+        if self.verbose:
+            print(f"PAPER BUY {symbol} qty={quantity} price={price:.2f} reason={reason}")
         return fill
 
     def exit(self, price, reason=""):
@@ -67,10 +77,11 @@ class PaperTrader:
             reason=reason,
         )
         self.fills.append(fill)
-        print(
-            f"PAPER EXIT {self.position.symbol} qty={self.position.quantity} "
-            f"price={price:.2f} pnl={pnl:.2f} reason={reason}"
-        )
+        if self.verbose:
+            print(
+                f"PAPER EXIT {self.position.symbol} qty={self.position.quantity} "
+                f"price={price:.2f} pnl={pnl:.2f} reason={reason}"
+            )
         self.position = None
         return fill
 

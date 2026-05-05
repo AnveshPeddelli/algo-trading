@@ -32,3 +32,42 @@ Implement or replace `generate_signal(self, candles, position=None)` and return:
 - `Signal("HOLD", reason="...")`
 
 The rest of the app will handle position sizing and paper execution.
+
+## Run Trading Desk UI
+
+For a live Tkinter trading desk with tabs for live feed, paper money, and trade planning:
+
+```powershell
+python run_live_ui.py
+```
+
+In the trading desk:
+
+- enter the instrument name and Upstox instrument key
+- click `Connect Live Feed`
+- log in through the browser
+- watch the live status panel and candle table update as ticks arrive
+- add paper funds in the `Paper Money` tab
+- plan entry, target, stop, quantity, expected profit, and risk in the `Trade Planner` tab
+- click to enter or exit paper trades
+
+## Run Backtesting UI
+
+For a desktop backtesting workflow with paper capital, strategy comparison, and trade logs:
+
+```powershell
+python run_backtest_ui.py
+```
+
+What the UI can do:
+
+- load a CSV with `time`, `open`, `high`, `low`, `close` columns
+- generate demo price data if you do not have a CSV yet
+- compare the built-in strategies and rank them by net profit
+- show closed trades, ending equity, win rate, and drawdown
+
+CSV notes:
+
+- accepted time columns: `time`, `datetime`, `date`, or `timestamp`
+- required price columns: `open`, `high`, `low`, `close`
+- candles should be in chronological order, though the loader will sort them if needed
